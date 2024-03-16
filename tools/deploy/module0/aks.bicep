@@ -36,7 +36,11 @@ resource acr 'Microsoft.ContainerRegistry/registries@2023-01-01-preview' = {
   }
 }
 
+<<<<<<< HEAD
 resource aks 'Microsoft.ContainerService/managedClusters@2023-11-01' = {
+=======
+resource aks 'Microsoft.ContainerService/managedClusters@2023-07-02-preview' = {
+>>>>>>> abc52d22e3b9c83247d2f28e2e26b1504e4d91f6
   name: clusterName
   location: location
   identity: {
