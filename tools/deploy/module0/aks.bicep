@@ -22,7 +22,7 @@ param agentCount int = 2
 param agentVMSize string = 'Standard_D8s_v3'
 
 // create azure container registry
-resource acr 'Microsoft.ContainerRegistry/registries@2022-09-02-preview' = {
+resource acr 'Microsoft.ContainerRegistry/registries@2023-01-01-preview' = {
   name: 'acr${uniqueString(resourceGroup().id)}'
   location: location
   sku: {
@@ -36,20 +36,30 @@ resource acr 'Microsoft.ContainerRegistry/registries@2022-09-02-preview' = {
   }
 }
 
-// create azure container registry
-resource acr 'Microsoft.ContainerRegistry/registries@2022-09-02-preview' = {
-  name: 'acr${uniqueString(resourceGroup().id)}'
+resource aks 'Microsoft.ContainerService/managedClusters@2022-09-02-preview' = {
+  name: clusterName
   location: location
-  sku: {
-    name: 'Standard'
-  }
   identity: {
     type: 'SystemAssigned'
   }
   properties: {
-    adminUserEnabled: true
+    dnsPrefix: dnsPrefix
+    agentPoolProfiles: [
+      {
+        name: 'agentpool'
+        count: agentCount
+        vmSize: agentVMSize
+        osType: 'Linux'
+        mode: 'System'
+      }
+    ]    
+    aadProfile: {
+      managed: true
+      enableAzureRBAC: true
+    }    
   }
 }
+
 
 resource akv 'Microsoft.KeyVault/vaults@2022-07-01' = {
   name: akvName
