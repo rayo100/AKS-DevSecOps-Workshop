@@ -36,31 +36,18 @@ resource acr 'Microsoft.ContainerRegistry/registries@2022-09-02-preview' = {
   }
 }
 
-<<<<<<< HEAD
-resource aks 'Microsoft.ContainerService/managedClusters@2023-11-01' = {
-=======
-resource aks 'Microsoft.ContainerService/managedClusters@2023-07-02-preview' = {
->>>>>>> abc52d22e3b9c83247d2f28e2e26b1504e4d91f6
-  name: clusterName
+// create azure container registry
+resource acr 'Microsoft.ContainerRegistry/registries@2022-09-02-preview' = {
+  name: 'acr${uniqueString(resourceGroup().id)}'
   location: location
+  sku: {
+    name: 'Standard'
+  }
   identity: {
     type: 'SystemAssigned'
   }
   properties: {
-    dnsPrefix: dnsPrefix
-    agentPoolProfiles: [
-      {
-        name: 'agentpool'
-        count: agentCount
-        vmSize: agentVMSize
-        osType: 'Linux'
-        mode: 'System'
-      }
-    ]    
-    aadProfile: {
-      managed: true
-      enableAzureRBAC: true
-    }    
+    adminUserEnabled: true
   }
 }
 
